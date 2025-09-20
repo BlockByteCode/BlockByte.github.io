@@ -1,0 +1,33 @@
+command /hide:
+	trigger:
+		if player does not have permission "hide.use":
+			send "&cYou don't have permission to use this."
+			send action bar "&cYou don't have permission to use this." to player
+			stop
+		else:
+			if {hide::%player's uuid%} is not set:
+				send "<##A8A8A8>You scrambled your username."
+				send action bar "<##A8A8A8>You scrambled your username." to player
+				set {hide::%player's uuid%} to true
+				make console execute command "/tab player %player's name% tagprefix &k"
+				make console execute command "/setskin %player's name% Sinsify"
+			else:
+				if {hide::%player's uuid%} is set:
+					send "<##A8A8A8>You unscrambled your username."
+					send action bar "<##A8A8A8>You unscrambled your username." to player
+					delete {hide::%player's uuid%}
+					make console execute command "/tab player %player's name% tagprefix"
+					make console execute command "/setskin %player's name% %player's name%"
+					
+on join:
+	if {hide::%player's uuid%} is set:
+		if player does not have permission "hide.use":
+			delete {hide::%player's uuid%}
+			wait 2 ticks
+			make console execute command "/tab player %player's name% tagprefix"
+			make console execute command "/setskin %player's name% %player's name%"
+			stop
+		else:
+			wait 2 ticks
+			make console execute command "/setskin %player's name% Sinsify"
+			stop

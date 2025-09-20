@@ -1,0 +1,7 @@
+command /wipechat:
+    permission: wipechat.use
+    permission message: "You don't have permission to use this command."
+    trigger:
+        loop 100 times: # number of lines to clear the chat
+            broadcast " " 
+        broadcast "&cThe chat has been wiped by &e%player%&c!"

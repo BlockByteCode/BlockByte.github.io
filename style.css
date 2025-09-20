@@ -65,3 +65,77 @@ footer a:hover { color:#000; }
   header nav a { display:block; margin:10px 0; }
   .hero h2 { font-size:2em; }
 }
+/* Skript Section Styling */
+#skript {
+  padding: 60px 20px;
+  background: #f9fafb;
+}
+
+#skript h2 {
+  font-size: 2.2em;
+  color: #3a86ff;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* Use same grid as plugins */
+.plugins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+/* Skript cards (match plugin cards) */
+.skript-card {
+  background: #fff;
+  border: 2px solid #3a86ff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.skript-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 25px rgba(58, 134, 255, 0.6);
+}
+
+.skript-card h3 {
+  color: #3a86ff;
+  margin-bottom: 10px;
+  font-size: 1.5em;
+}
+
+.skript-card p {
+  margin-bottom: 12px;
+  font-size: 0.95em;
+  color: #555;
+  line-height: 1.5;
+}
+
+.skript-card code {
+  background: #e0e0e0;
+  color: #111;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* Skript download button */
+.skript-card a {
+  display: inline-block;
+  background: #3a86ff;
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.skript-card a:hover {
+  background: #2c6cd1;
+  transform: scale(1.05);
+}

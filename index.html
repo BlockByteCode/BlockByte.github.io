@@ -53,6 +53,69 @@
       </div>
     </div>
   </section>
+  
+<!-- 🌟 Skript Section -->
+<section id="skript">
+  <h2>Skript Examples</h2>
+  <div class="plugins-grid">
+
+    <!-- Skript 1 -->
+    <div class="skript-card">
+      <h3>Discord Shoutout</h3>
+      <p>A simple Skript: when you use <code>/discord</code>, it will show a well-formatted Discord link that is 100% easy to configure.</p>
+      <a href="skripts/Discord.txt" class="button-main" download="Discord.txt">Download Skript</a>
+    </div>
+
+    <!-- Skript 2 -->
+    <div class="skript-card">
+      <h3>Player Wipe</h3>
+      <p>A simple <code>/wipe</code> command that resets a player's balance to 0, clears their inventory, ender chests, and shards. Recommended for shop or survival servers.</p>
+      <a href="skripts/Wipe.txt" class="button-main" download="Wipe.txt">Download Skript</a>
+    </div>
+
+    <!-- Skript 3 -->
+    <div class="skript-card">
+      <h3>Simple Hide</h3>
+      <p>Adds a simple <code>/hide</code> command. Using <code>/hide</code> will hide your username from other players.</p>
+      <a href="skripts/Hide.txt" class="button-main" download="Hide.txt">Download Skript</a>
+    </div>
+
+    <!-- Skript 4 -->
+    <div class="skript-card">
+      <h3>Wipe Chat</h3>
+      <p>Clears the chat for all players.</p>
+      <a href="skripts/Chatwipe.txt" class="button-main" download="Chatwipe.txt">Download Skript</a>
+    </div>
+
+    <!-- Skript 5 -->
+    <div class="skript-card">
+      <h3>CombatLog System</h3>
+      <p>Simple CombatLog system for shop or survival servers.</p>
+      <a href="skripts/ComBatlog.txt" class="button-main" download="ComBatlog.txt">Download Skript</a>
+    </div>
+
+    <!-- Skript 6 -->
+    <div class="skript-card">
+      <h3>Random Teleport / Phantom Toggle</h3>
+      <p>A simple Phantom toggle Skript that allows you to disable phantom spawns within 500 blocks around you using the command <code>/phantomtoggle</code>.</p>
+      <a href="skripts/Phantomtoggle.txt" class="button-main" download="Phantomtoggle.txt">Download Skript</a>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- Smooth scroll script (same as plugin section) -->
+<script>
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function(e) {
+      e.preventDefault();
+      document.querySelector(this.getAttribute("href"))
+        .scrollIntoView({ behavior: "smooth" });
+    });
+  });
+</script>
 
   <!-- Plugins Section -->
   <section id="plugins">
@@ -84,35 +147,37 @@
     </div>
   </section>
 
-  <!-- Premium Section -->
-  <section id="premium">
-    <h2>Premium Plugins</h2>
-    <p>Unlock exclusive features, advanced tools, and special support by purchasing premium plugins. Your contribution helps us continue improving and releasing new content!</p>
-    <ul class="premium-benefits">
-      <li>✅ Access to all premium plugins</li>
-      <li>🚀 Faster updates and new features</li>
-      <li>🎨 Exclusive customization options</li>
-      <li>💎 Priority support via Discord</li>
-    </ul>
-    <div class="center">
-      <a href="YOUR_PAYPAL_LINK_HERE" class="button-main" target="_blank">Buy Premium Plugins</a>
-    </div>
-  </section>
+ <!-- Premium Section -->
+<section id="premium">
+  <h2>Premium Plugins</h2>
+  <p>
+    Unlock exclusive features, advanced tools, and special support by purchasing premium plugins. Your contribution helps us continue improving and releasing new content!
+  </p>
+  <ul class="premium-benefits">
+    <li>✅ Access to all premium plugins</li>
+    <li>🚀 Faster updates and new features</li>
+    <li>🎨 Exclusive customization options</li>
+    <li>💎 Priority support via Discord</li>
+  </ul>
+  <div class="center">
+    <a href="#" class="button-main" onclick="return false;">Coming Soon...</a>
+  </div>
+</section>
+
 
   <!-- Contact Section -->
-  <section id="contact">
-    <h2>Contact / Support</h2>
-    <p>Join our Discord to get help, request features, and stay updated with all our plugin releases.</p>
-    <div class="center">
-      <a href="YOUR_DISCORD_INVITE_HERE" class="button-main" target="_blank">Join Discord</a>
-    </div>
-  </section>
+<section id="contact">
+  <h2 style="text-align:center;">Contact / Support</h2>
+  <p style="text-align:center;">
+    Join our Discord to get help, request features, and stay updated with all our plugin releases.
+  </p>
+  <div class="center">
+    <a href="https://discord.gg/uUTcz7H6Vs" class="button-main" target="_blank">Join Discord</a>
+  </div>
+</section>
 
-  <!-- Footer -->
-  <footer>
-    &copy; 2025 My Minecraft Plugins. All rights reserved. <br>
-    <a href="https://github.com/YOUR_GITHUB_USERNAME" target="_blank">GitHub</a>
-  </footer>
+
+
 
   <script src="script.js"></script>
 </body>

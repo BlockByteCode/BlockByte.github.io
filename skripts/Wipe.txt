@@ -1,0 +1,38 @@
+command /wipe <offline player>:
+    permission: wipe.use
+    permission message: &cYou do not have permission to use this command.
+    trigger:
+        set {_target} to arg-1
+        set {_uuid} to uuid of {_target}
+
+        # Clear ender chest (twice)
+        execute console command "variableenderchests:clearechest %{_target}%"
+        wait 5 ticks
+        execute console command "variableenderchests:clearechest %{_target}%"
+
+        # Clear inventory
+        execute console command "clear %{_target}%"
+
+        # Reset balance
+        execute console command "eco reset %{_target}%"
+
+        # Reset shards
+        execute console command "shards set %{_target}% 0"
+
+        # Delete stats file (kills, blocks mined, etc.)
+        set {_stats} to "world/stats/%{_uuid}%.json"
+        if file {_stats} exists:
+            delete file {_stats}
+            send "&aDeleted stats file for %{_target}%."
+
+        # Delete playerdata file (resets playtime, XP, potion effects, etc.)
+        set {_dat} to "world/playerdata/%{_uuid}%.dat"
+        if file {_dat} exists:
+            delete file {_dat}
+            send "&aDeleted .dat file for %{_target}% (resets playtime and all base data)."
+
+        # Kick player if online
+        if {_target} is online:
+            kick {_target} due to "&cYour profile has been completely wiped by an admin."
+
+        send "&aSuccessfully wiped &f%{_target}%&a from the server."

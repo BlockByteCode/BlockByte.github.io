@@ -1,0 +1,25 @@
+# File: phantomtoggle.sk
+# Minimal Phantom spawn toggle with 500-block radius
+
+options:
+    radius: 500  # radius in blocks
+
+variables:
+    {phantomtoggle::*} = list()  # Tracks which players have protection ON
+
+# Command to toggle Phantom protection
+command /phantomtoggle:
+    trigger:
+        if {phantomtoggle::%player%} is set:
+            delete {phantomtoggle::%player%}
+            send "&cPhantom spawn protection OFF."
+        else:
+            set {phantomtoggle::%player%} to true
+            send "&aPhantom spawn protection ON."
+
+# Cancel Phantom spawns for players who have protection ON within radius
+on spawn of phantom:
+    loop all players:
+        if {phantomtoggle::%loop-player%} is set:
+            if distance between event-entity and loop-player <= {@radius}:
+                cancel event

@@ -1,0 +1,189 @@
+on load:
+	delete {incombat::*}
+	delete {combattime::*}
+	delete {lasthit::*}
+
+on damage:
+	if attacker is player:
+		if attacker is not victim:
+			if victim is player:
+				set {incombat::%attacker's uuid%} to true
+				set {incombat::%victim's uuid%} to true
+				set {combattime::%attacker's uuid%} to 21
+				set {combattime::%victim's uuid%} to 21
+				set {lasthit::%attacker's uuid%} to "%victim%"
+				set {lasthit::%victim's uuid%} to "%attacker%"
+
+every 1 seconds:
+	loop all players:
+		if {incombat::%loop-player's uuid%} is set:
+			remove 1 from {combattime::%loop-player's uuid%}
+			if {combattime::%loop-player's uuid%} is greater than 1:
+				send action bar "<##A8A8A8>Combat: <##37BFF9>%{combattime::%loop-player's uuid%}%" to loop-player
+			if {combattime::%loop-player's uuid%} is 1:
+				send action bar "<##A8A8A8>Combat: <##37BFF9>%{combattime::%loop-player's uuid%}%" to loop-player
+			if {combattime::%loop-player's uuid%} is 0:
+				delete {incombat::%loop-player's uuid%}
+				delete {lasthit::%loop-player's uuid%}
+
+on respawn:
+	if {incombat::%player's uuid%} is set:
+		clear {incombat::%player's uuid%}
+	if {lasthit::%player's uuid%} is set:
+		delete {lasthit::%player's uuid%}
+	if {loggedout::%player's uuid%} is set:
+		delete {loggedout::%player's uuid%}
+		
+on join:
+	if {incombat::%player's uuid%} is set:
+		clear {incombat::%player's uuid%}
+	if {lasthit::%player's uuid%} is set:
+		delete {lasthit::%player's uuid%}
+	if {loggedout::%player's uuid%} is set:
+		delete {loggedout::%player's uuid%}
+
+on quit:
+	if {incombat::%player's uuid%} is set:
+		set {loggedout::%player's uuid%} to true
+		set {_r} to "%{lasthit::%player's uuid%}%" parsed as player
+		add 1 to {kills::%{_r}'s uuid%}
+		
+		send "<##FB0000>☠ %player% was slain by %{lasthit::%player's uuid%}%" to {_r}
+		
+		kill the player
+		delete {incombat::%player's uuid%}
+		delete {lasthit::%player's uuid%}
+		delete {incombat::%{_r}'s uuid%}
+		delete {lasthit::%{_r}'s uuid%}
+		
+		if {shardscooldown::%{_r}'s uuid%%player's uuid%} is not set:
+			set {shardscooldown::%{_r}'s uuid%%player's uuid%} to now
+			send "<##A303F8>+★10 <##A2A9B5>for killing %player%" to {_r}
+			send action bar "<##A303F8>+★10 <##A2A9B5>for killing %player%" to {_r}
+			make console execute command "/giveshards give %{lasthit::%player's uuid%}% 10 -s"
+			wait 24 hours
+			delete {shardscooldown::%{_r}'s uuid%%player's uuid%}
+			stop
+		else:
+			stop
+
+on resurrect attempt:
+	if entity is player:
+		if {loggedout::%player's uuid%} is set:
+			cancel event
+
+on death of player:
+	set the death message to ""
+	if {incombat::%victim's uuid%} is set:
+		delete {incombat::%victim's uuid%}
+		delete {lasthit::%victim's uuid%}
+	if attacker is a player:
+		if attacker is set:
+		
+			send "<##FB0000>☠ %victim% was slain by %attacker%" to victim
+			send "<##FB0000>☠ %victim% was slain by %attacker%" to attacker
+			
+			delete {incombat::%attacker's uuid%}
+			delete {lasthit::%attacker's uuid%}
+			
+			if {shardscooldown::%attacker's uuid%%victim's uuid%} is not set:
+				set {shardscooldown::%attacker's uuid%%victim's uuid%} to now
+				send "<##A303F8>+★10 <##A2A9B5>for killing %victim%" to attacker
+				send action bar "<##A303F8>+★10 <##A2A9B5>for killing %victim%" to attacker
+				make console execute command "/giveshards give %attacker% 10 -s"
+				wait 24 hours
+				delete {shardscooldown::%attacker's uuid%%victim's uuid%}
+				stop
+			else:
+				stop
+			
+on command "tpa":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "tpacancel":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "tpaccept":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "tpahere":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "home":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "homes":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "warp":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "warps":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "rtp":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "team home":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "spawn":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+		
+on command "afk":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
+        
+on command "tpauto":
+	if {incombat::%player's uuid%} is set:
+		cancel event
+		send "&cYou cannot do this in combat."
+		send action bar "&cYou cannot do this in combat." to player
+		play sound "entity.villager.no" with volume 1.0 to the player
