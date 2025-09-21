@@ -3,217 +3,1517 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codehub</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <title>Codehub - Ultimate Minecraft Plugin Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #3a86ff;
+      --primary-dark: #2c6cd1;
+      --primary-light: #6fa8ff;
+      --secondary: #ff006e;
+      --success: #06d6a0;
+      --warning: #ffd23f;
+      --danger: #f72585;
+      --dark: #1a1a2e;
+      --light: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      --gradient-secondary: linear-gradient(135deg, var(--secondary) 0%, #ff4081 100%);
+      --gradient-rainbow: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+
+    html { 
+      scroll-behavior: smooth; 
+      scroll-padding-top: 100px;
+    }
+
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background: var(--light); 
+      color: var(--gray-800); 
+      line-height: 1.6; 
+      overflow-x: hidden;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--gray-100); }
+    ::-webkit-scrollbar-thumb { 
+      background: var(--primary); 
+      border-radius: 4px; 
+      transition: background 0.3s ease;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+
+    /* Loading Screen */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--gray-200);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    header.scrolled {
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      transition: transform 0.3s ease;
+      object-fit: cover;
+    }
+
+    .logo:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .logo-text {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--gray-700);
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s ease;
+      padding: 0.5rem 0;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient-primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--gray-700);
+      cursor: pointer;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="10" cy="60" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="90" cy="40" r="0.5" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: slideUp 1s ease 0.5s forwards;
+    }
+
+    .hero p {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      animation: slideUp 1s ease 0.7s forwards;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: slideUp 1s ease 0.9s forwards;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    /* Sections */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 3rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 1.2rem;
+      color: var(--gray-600);
+      margin-bottom: 3rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--gray-800);
+    }
+
+    .feature-card p {
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* Plugin/Skript Cards */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .card-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: var(--gradient-primary);
+    }
+
+    .card-content {
+      padding: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--gray-800);
+    }
+
+    .card-description {
+      color: var(--gray-600);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .card-command {
+      background: var(--gray-100);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      color: var(--gray-800);
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--gray-200);
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .card-btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .card-btn-primary {
+      background: var(--gradient-primary);
+      color: white;
+    }
+
+    .card-btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Ribbons */
+    .ribbon {
+      position: absolute;
+      top: 15px;
+      right: -35px;
+      width: 120px;
+      text-align: center;
+      font-weight: 600;
+      padding: 8px 0;
+      font-size: 0.8rem;
+      transform: rotate(45deg);
+      box-shadow: var(--shadow);
+      z-index: 10;
+    }
+
+    .ribbon.free {
+      background: var(--success);
+      color: white;
+    }
+
+    .ribbon.premium {
+      background: var(--gradient-secondary);
+      color: white;
+    }
+
+    /* Statistics Section */
+    .stats {
+      background: var(--gradient-primary);
+      margin: 5rem 0;
+      border-radius: 20px;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .stat-item {
+      color: white;
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    /* Premium Benefits */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .benefit-icon {
+      font-size: 1.5rem;
+      color: var(--success);
+    }
+
+    /* Contact Section */
+    .contact {
+      background: var(--gradient-rainbow);
+      margin: 5rem -2rem 0 -2rem;
+      padding: 5rem 2rem;
+      text-align: center;
+      color: white;
+    }
+
+    .contact h2 {
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--gray-900);
+      color: var(--gray-300);
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--primary-light);
+    }
+
+    /* Scroll to top button */
+    .scroll-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: var(--shadow-lg);
+      transition: all 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 1000;
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .scroll-top:hover {
+      transform: translateY(-3px);
+    }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .slide-in-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all 0.6s ease;
+    }
+
+    .slide-in-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .slide-in-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.6s ease;
+    }
+
+    .slide-in-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Search and Filter */
+    .search-container {
+      max-width: 500px;
+      margin: 0 auto 3rem;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      border: 2px solid var(--gray-200);
+      border-radius: 50px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+    }
+
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 0.5rem 1rem;
+      border: 2px solid var(--gray-200);
+      background: white;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .filter-tab.active {
+      background: var(--gradient-primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-menu {
+        position: fixed;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 2rem;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+      }
+
+      .section {
+        padding: 3rem 1rem;
+      }
+
+      .contact {
+        margin-left: -1rem;
+        margin-right: -1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header-container {
+        padding: 1rem;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loading">
+    <div class="loader"></div>
+  </div>
 
-  <!-- Header with logo -->
-  <header id="home">
-    <div class="container-header">
-      <img src="images/Copilot_20250920_042311.png" alt="Logo" class="logo">
-      <h1>Codehub</h1>
+  <!-- Header -->
+  <header id="header">
+    <div class="header-container">
+      <div class="logo-section">
+        <img src="images/Copilot_20250920_042311.png" alt="Codehub Logo" class="logo">
+        <h1 class="logo-text">Codehub</h1>
+      </div>
+      <nav>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="#home" class="nav-link">Home</a></li>
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#plugins" class="nav-link">Plugins</a></li>
+          <li><a href="#skripts" class="nav-link">Skripts</a></li>
+          <li><a href="#premium" class="nav-link">Premium</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
     </div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#features">Features</a>
-      <a href="#plugins">Plugins</a>
-      <a href="#premium">Premium</a>
-      <a href="#contact">Contact</a>
-    </nav>
   </header>
 
   <!-- Hero Section -->
-  <section class="hero">
-    <h2>Enhance Your Server With Ease</h2>
-    <p>Discover amazing plugins for Minecraft servers. Free & premium options available. Check stats, improve gameplay, and engage your players!</p>
-    <a class="button-main" href="#plugins">View Plugins</a>
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Ultimate Minecraft Plugin Hub</h1>
+      <p>Discover premium plugins and scripts to enhance your Minecraft server. Built by developers, for developers. Transform your server experience with our cutting-edge tools.</p>
+      <div class="hero-buttons">
+        <a href="#plugins" class="btn btn-primary">
+          <i class="fas fa-rocket"></i>
+          Explore Plugins
+        </a>
+        <a href="#skripts" class="btn btn-secondary">
+          <i class="fas fa-code"></i>
+          View Skripts
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statistics Section -->
+  <section class="section">
+    <div class="stats">
+      <div class="stats-grid">
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-count="5">0</div>
+          <div class="stat-label">Active Plugins</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-count="6">0</div>
+          <div class="stat-label">Active Skripts</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-count="24">0</div>
+          <div class="stat-label">7 Support</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Features Section -->
-  <section id="features">
-    <h2>Why Choose Our Plugins?</h2>
+  <section class="section" id="features">
+    <h2 class="section-title">Why Choose Codehub?</h2>
+    <p class="section-subtitle">Experience the difference with our professionally crafted plugins and dedicated support</p>
     <div class="features-grid">
-      <div class="feature-card">
-        <h3>🎨 User-Friendly</h3>
-        <p>Our plugins feature intuitive menus and interfaces for easy management without complicated commands.</p>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🎨</div>
+        <h3>Intuitive Design</h3>
+        <p>Beautiful, user-friendly interfaces with modern GUI designs that make server management a breeze for both admins and players.</p>
       </div>
-      <div class="feature-card">
-        <h3>⚡ Optimized & Fast</h3>
-        <p>Lightweight and performance-friendly plugins designed to run smoothly on any server.</p>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">⚡</div>
+        <h3>Lightning Fast</h3>
+        <p>Optimized code ensures minimal server impact while delivering maximum functionality. Built for performance and scalability.</p>
       </div>
-      <div class="feature-card">
-        <h3>🛡 Reliable & Stable</h3>
-        <p>Tested for bugs and server compatibility to ensure maximum stability and uptime.</p>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🛡️</div>
+        <h3>Rock Solid</h3>
+        <p>Thoroughly tested and battle-proven on hundreds of servers. Regular updates ensure compatibility and stability.</p>
       </div>
-      <div class="feature-card">
-        <h3>💎 Premium Support</h3>
-        <p>We offer dedicated support and continuous updates to keep your plugins running perfectly.</p>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">💎</div>
+        <h3>Premium Support</h3>
+        <p>Get instant help from our expert team. Priority support, custom configurations, and feature requests included.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🔧</div>
+        <h3>Easy Setup</h3>
+        <p>Plug-and-play installation with comprehensive documentation. Get your plugins running in minutes, not hours.</p>
+      </div>
+      <div class="feature-card fade-in">
+        <div class="feature-icon">🚀</div>
+        <h3>Constant Updates</h3>
+        <p>Regular feature additions and improvements based on community feedback. Your investment keeps growing in value.</p>
       </div>
     </div>
   </section>
-  
-<!-- 🌟 Skript Section -->
-<section id="skript">
-  <h2>Skript Examples</h2>
-  <div class="plugins-grid">
-
-    <!-- Skript 1 -->
-    <div class="skript-card">
-      <h3>Discord Shoutout</h3>
-      <p>A simple Skript: when you use <code>/discord</code>, it will show a well-formatted Discord link that is 100% easy to configure.</p>
-      <a href="skripts/Discord.txt" class="button-main" download="Discord.txt">Download Skript</a>
-    </div>
-
-    <!-- Skript 2 -->
-    <div class="skript-card">
-      <h3>Player Wipe</h3>
-      <p>A simple <code>/wipe</code> command that resets a player's balance to 0, clears their inventory, ender chests, and shards. Recommended for shop or survival servers.</p>
-      <a href="skripts/Wipe.txt" class="button-main" download="Wipe.txt">Download Skript</a>
-    </div>
-
-    <!-- Skript 3 -->
-    <div class="skript-card">
-      <h3>Simple Hide</h3>
-      <p>Adds a simple <code>/hide</code> command. Using <code>/hide</code> will hide your username from other players.</p>
-      <a href="skripts/Hide.txt" class="button-main" download="Hide.txt">Download Skript</a>
-    </div>
-
-    <!-- Skript 4 -->
-    <div class="skript-card">
-      <h3>Wipe Chat</h3>
-      <p>Clears the chat for all players.</p>
-      <a href="skripts/Chatwipe.txt" class="button-main" download="Chatwipe.txt">Download Skript</a>
-    </div>
-
-    <!-- Skript 5 -->
-    <div class="skript-card">
-      <h3>CombatLog System</h3>
-      <p>Simple CombatLog system for shop or survival servers.</p>
-      <a href="skripts/ComBatlog.txt" class="button-main" download="ComBatlog.txt">Download Skript</a>
-    </div>
-
-    <!-- Skript 6 -->
-    <div class="skript-card">
-      <h3>Random Teleport / Phantom Toggle</h3>
-      <p>A simple Phantom toggle Skript that allows you to disable phantom spawns within 500 blocks around you using the command <code>/phantomtoggle</code>.</p>
-      <a href="skripts/Phantomtoggle.txt" class="button-main" download="Phantomtoggle.txt">Download Skript</a>
-    </div>
-
-  </div>
-</section>
-
-
-
-<!-- Smooth scroll script (same as plugin section) -->
-<script>
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener("click", function(e) {
-      e.preventDefault();
-      document.querySelector(this.getAttribute("href"))
-        .scrollIntoView({ behavior: "smooth" });
-    });
-  });
-</script>
 
   <!-- Plugins Section -->
-  <section id="plugins">
-    <h2>Our Plugins</h2>
-    <div class="plugins-grid">
-      <!-- StatusGUI Plugin (Free) -->
-      <div class="plugin-card">
+  <section class="section" id="plugins">
+    <h2 class="section-title">Featured Plugins</h2>
+    <p class="section-subtitle">Powerful tools to enhance your Minecraft server experience</p>
+    
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-input" id="pluginSearch" placeholder="Search plugins...">
+    </div>
+
+    <div class="filter-tabs">
+      <div class="filter-tab active" data-filter="all">All</div>
+      <div class="filter-tab" data-filter="free">Free</div>
+      <div class="filter-tab" data-filter="premium">Premium</div>
+    </div>
+
+    <div class="cards-grid" id="pluginsGrid">
+      <div class="card fade-in" data-category="free">
         <div class="ribbon free">Free</div>
-        <img src="images/statusgui.png" alt="StatusGUI Screenshot">
-        <h3>StatusGUI</h3>
-        <p>GUI-based plugin showing player kills, deaths, playtime, rank, and online/offline status.</p>
-        <p><strong>Command:</strong> <code>/status {playername}</code></p>
-        <div class="buttons">
-          <a href="files/statusgui.jar" class="button" download="StatusGUI.jar">Download Free</a>
+        <img src="images/statusgui.png" alt="StatusGUI Screenshot" class="card-image">
+        <div class="card-content">
+          <h3 class="card-title">StatusGUI</h3>
+          <p class="card-description">Advanced GUI-based plugin displaying comprehensive player statistics including kills, deaths, playtime, rank, and online status with beautiful animations.</p>
+          <div class="card-command">/status {playername}</div>
+          <div class="card-actions">
+            <a href="files/statusgui.jar" class="card-btn card-btn-primary" download="StatusGUI.jar">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
         </div>
       </div>
 
-      <!-- BChatFilter Plugin (Free) -->
-<div class="plugin-card">
-  <div class="ribbon free">Free</div>
-  <img src="images/bchatfilter.png" alt="BChatFilter Screenshot">
-  <h3>BChatFilter</h3>
-  <p>Protect your server chat with custom filters to block bad words or unwanted messages. Easy to configure and lightweight.</p>
-  <p><strong>Command:</strong> <code>/bchatfilter</code></p>
-  <div class="buttons">
-    <a href="files/bchatfilter.jar" class="button" download="BChatFilter.jar">Download Free</a>
-  </div>
-</div>
-
-<!-- BWhisper Plugin (Free) -->
-<div class="plugin-card">
-  <div class="ribbon free">Free</div>
-  <img src="images/BWhisper.png" alt="BWhisper Screenshot">
-  <h3>BWhisper</h3>
-  <p>Send private messages to other players on your server quickly and securely. Includes toggle options for notifications.</p>
-  <p><strong>Command:</strong> <code>/bwhisper {player} {message}</code></p>
-  <div class="buttons">
-    <a href="files/bwhisper.jar" class="button" download="BWhisper.jar">Download Free</a>
-  </div>
-</div>
-
-      <!-- Finvsee+ (Free) -->
-      <div class="plugin-card">
+      <div class="card fade-in" data-category="free">
         <div class="ribbon free">Free</div>
-        <img src="images/jjef.png" alt="StatusGUI Screenshot">
-        <h3>FInvsee+</h3>
-        <p>GUI-based plugin showing players invertory with the command <code>/invsee</code> [clear invertory butten+ban] requires customebanplus.</p>
-        <p><strong>Command:</strong> <code>/status {playername}</code></p>
-        <div class="buttons">
-          <a href="files/finvsee+.jar" class="button" download="StatusGUI.jar">Download Free</a>
+        <img src="images/bchatfilter.png" alt="BChatFilter Screenshot" class="card-image">
+        <div class="card-content">
+          <h3 class="card-title">BChatFilter</h3>
+          <p class="card-description">Intelligent chat protection system with customizable word filters, anti-spam detection, and automatic moderation to keep your server chat clean.</p>
+          <div class="card-command">/bchatfilter</div>
+          <div class="card-actions">
+            <a href="files/bchatfilter.jar" class="card-btn card-btn-primary" download="BChatFilter.jar">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
         </div>
       </div>
 
-      <!-- FBlacklist Plugin (Free) -->
-      <div class="plugin-card">
+      <div class="card fade-in" data-category="free">
         <div class="ribbon free">Free</div>
-        <img src="images/fblacklist.png" alt="FBlacklist Screenshot">
-        <h3>FBlacklist</h3>
-        <p>A GUI-based plugin where players put items into a protected interface. Clicking hotbar numbers opens the GUI. Items cannot be retrieved after being placed, effectively blacklisting them.</p>
-        <p><strong>Command:</strong> <code>/fblacklist</code></p>
-        <div class="buttons">
-          <a href="files/fblacklist.jar" class="button" download="FBlacklist.jar">Download Free</a>
+        <img src="images/BWhisper.png" alt="BWhisper Screenshot" class="card-image">
+        <div class="card-content">
+          <h3 class="card-title">BWhisper</h3>
+          <p class="card-description">Secure private messaging system with encryption, message history, and customizable notification settings for seamless player communication.</p>
+          <div class="card-command">/bwhisper {player} {message}</div>
+          <div class="card-actions">
+            <a href="files/bwhisper.jar" class="card-btn card-btn-primary" download="BWhisper.jar">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card fade-in" data-category="free">
+        <div class="ribbon free">Free</div>
+        <img src="images/jjef.png" alt="FInvsee+ Screenshot" class="card-image">
+        <div class="card-content">
+          <h3 class="card-title">FInvsee+</h3>
+          <p class="card-description">Advanced inventory inspection tool with GUI interface, inventory clearing capabilities, and integration with ban systems for comprehensive player management.</p>
+          <div class="card-command">/invsee {playername}</div>
+          <div class="card-actions">
+            <a href="files/finvsee+.jar" class="card-btn card-btn-primary" download="FInvsee+.jar">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card fade-in" data-category="free">
+        <div class="ribbon free">Free</div>
+        <img src="images/fblacklist.png" alt="FBlacklist Screenshot" class="card-image">
+        <div class="card-content">
+          <h3 class="card-title">FBlacklist</h3>
+          <p class="card-description">Innovative item blacklist system with protected GUI interface. Players can deposit items that become permanently inaccessible, perfect for item disposal.</p>
+          <div class="card-command">/fblacklist</div>
+          <div class="card-actions">
+            <a href="files/fblacklist.jar" class="card-btn card-btn-primary" download="FBlacklist.jar">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
- <!-- Premium Section -->
-<section id="premium">
-  <h2>Premium Plugins</h2>
-  <p>
-    Unlock exclusive features, advanced tools, and special support by purchasing premium plugins. Your contribution helps us continue improving and releasing new content!
-  </p>
-  <ul class="premium-benefits">
-    <li>✅ Access to all premium plugins</li>
-    <li>🚀 Faster updates and new features</li>
-    <li>🎨 Exclusive customization options</li>
-    <li>💎 Priority support via Discord</li>
-  </ul>
-  <div class="center">
-    <a href="#" class="button-main" onclick="return false;">Coming Soon...</a>
-  </div>
-</section>
+  <!-- Skripts Section -->
+  <section class="section" id="skripts">
+    <h2 class="section-title">Premium Skripts</h2>
+    <p class="section-subtitle">Ready-to-use Skript code for instant server enhancement</p>
+    
+    <div class="search-container">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" class="search-input" id="skriptSearch" placeholder="Search skripts...">
+    </div>
 
+    <div class="cards-grid" id="skriptsGrid">
+      <div class="card fade-in">
+        <div class="card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+          <i class="fab fa-discord"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Discord Shoutout</h3>
+          <p class="card-description">Beautifully formatted Discord server promotion system with customizable messages and click-to-join functionality.</p>
+          <div class="card-command">/discord</div>
+          <div class="card-actions">
+            <a href="skripts/Discord.txt" class="card-btn card-btn-primary" download="Discord.txt">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card fade-in">
+        <div class="card-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+          <i class="fas fa-user-times"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Player Wipe</h3>
+          <p class="card-description">Complete player reset system that clears balance, inventory, ender chests, and custom data. Perfect for shop and survival servers.</p>
+          <div class="card-command">/wipe {player}</div>
+          <div class="card-actions">
+            <a href="skripts/Wipe.txt" class="card-btn card-btn-primary" download="Wipe.txt">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card fade-in">
+        <div class="card-image" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); display: flex; align-items: center; justify-content: center; color: #333; font-size: 2rem;">
+          <i class="fas fa-user-ninja"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Simple Hide</h3>
+          <p class="card-description">Elegant vanish system allowing players to become invisible to others with toggle functionality and permission support.</p>
+          <div class="card-command">/hide</div>
+          <div class="card-actions">
+            <a href="skripts/Hide.txt" class="card-btn card-btn-primary" download="Hide.txt">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card fade-in">
+        <div class="card-image" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); display: flex; align-items: center; justify-content: center; color: #333; font-size: 2rem;">
+          <i class="fas fa-broom"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Chat Wipe</h3>
+          <p class="card-description">Instant chat clearing utility for all players with customizable clear messages and admin notifications.</p>
+          <div class="card-command">/chatwipe</div>
+          <div class="card-actions">
+            <a href="skripts/Chatwipe.txt" class="card-btn card-btn-primary" download="Chatwipe.txt">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card fade-in">
+        <div class="card-image" style="background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); display: flex; align-items: center; justify-content: center; color: #333; font-size: 2rem;">
+          <i class="fas fa-sword"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">CombatLog System</h3>
+          <p class="card-description">Advanced combat logging prevention with customizable timers, PvP tagging, and logout penalties for competitive servers.</p>
+          <div class="card-command">Automatic Detection</div>
+          <div class="card-actions">
+            <a href="skripts/ComBatlog.txt" class="card-btn card-btn-primary" download="CombatLog.txt">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card fade-in">
+        <div class="card-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem;">
+          <i class="fas fa-ghost"></i>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Phantom Toggle</h3>
+          <p class="card-description">Smart phantom spawn control system with 500-block radius protection and individual player toggle capabilities.</p>
+          <div class="card-command">/phantomtoggle</div>
+          <div class="card-actions">
+            <a href="skripts/Phantomtoggle.txt" class="card-btn card-btn-primary" download="PhantomToggle.txt">
+              <i class="fas fa-download"></i> Download
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Premium Section -->
+  <section class="section" id="premium">
+    <h2 class="section-title">Premium Access</h2>
+    <p class="section-subtitle">Unlock exclusive content and priority support with our premium membership</p>
+    
+    <div class="benefits-grid">
+      <div class="benefit-item fade-in">
+        <i class="fas fa-check-circle benefit-icon"></i>
+        <div>
+          <h4>Exclusive Premium Plugins</h4>
+          <p>Access to advanced plugins not available in free tier</p>
+        </div>
+      </div>
+      <div class="benefit-item fade-in">
+        <i class="fas fa-bolt benefit-icon"></i>
+        <div>
+          <h4>Priority Updates</h4>
+          <p>Get new features and bug fixes before everyone else</p>
+        </div>
+      </div>
+      <div class="benefit-item fade-in">
+        <i class="fas fa-palette benefit-icon"></i>
+        <div>
+          <h4>Custom Configurations</h4>
+          <p>Personalized plugin setups tailored to your server</p>
+        </div>
+      </div>
+      <div class="benefit-item fade-in">
+        <i class="fas fa-headset benefit-icon"></i>
+        <div>
+          <h4>24/7 Premium Support</h4>
+          <p>Direct access to our development team for instant help</p>
+        </div>
+      </div>
+      <div class="benefit-item fade-in">
+        <i class="fas fa-code benefit-icon"></i>
+        <div>
+          <h4>Custom Development</h4>
+          <p>Request custom plugins built specifically for your needs</p>
+        </div>
+      </div>
+      <div class="benefit-item fade-in">
+        <i class="fas fa-crown benefit-icon"></i>
+        <div>
+          <h4>VIP Discord Role</h4>
+          <p>Special recognition and exclusive channels in our community</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="center" style="margin-top: 3rem;">
+      <a href="#contact" class="btn btn-primary" style="font-size: 1.1rem; padding: 1.2rem 3rem;">
+        <i class="fas fa-star"></i>
+        Coming Soon - Join Waitlist
+      </a>
+    </div>
+  </section>
 
   <!-- Contact Section -->
-<section id="contact">
-  <h2 style="text-align:center;">Contact / Support</h2>
-  <p style="text-align:center;">
-    Join our Discord to get help, request features, and stay updated with all our plugin releases or our discord bot configs.</p>
-  <div class="center">
-    <a href="https://discord.gg/kQamKSwV9a" class="button-main" target="_blank">Join Discord</a>
-  </div>
-</section>
+  <section class="contact" id="contact">
+    <div class="section">
+      <h2>Join Our Community</h2>
+      <p style="font-size: 1.2rem; margin-bottom: 2rem;">Connect with thousands of server owners, get instant support, and stay updated with the latest releases. Our Discord community is the heart of Codehub!</p>
+      
+      <div class="hero-buttons">
+        <a href="https://discord.gg/kQamKSwV9a" class="btn btn-primary" target="_blank" style="font-size: 1.1rem;">
+          <i class="fab fa-discord"></i>
+          Join Discord Server
+        </a>
+        <a href="#plugins" class="btn btn-secondary">
+          <i class="fas fa-download"></i>
+          Browse Downloads
+        </a>
+      </div>
+    </div>
+  </section>
 
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="#home" class="footer-link">Home</a>
+        <a href="#plugins" class="footer-link">Plugins</a>
+        <a href="#skripts" class="footer-link">Skripts</a>
+        <a href="#premium" class="footer-link">Premium</a>
+        <a href="https://discord.gg/kQamKSwV9a" class="footer-link" target="_blank">Discord</a>
+      </div>
+      <div style="border-top: 1px solid var(--gray-700); padding-top: 2rem; margin-top: 2rem;">
+        <p>&copy; 2025 Codehub. Made with ❤️ for the Minecraft community.</p>
+        <p style="margin-top: 0.5rem; color: var(--gray-500);">Enhancing servers worldwide, one plugin at a time.</p>
+      </div>
+    </div>
+  </footer>
 
+  <!-- Scroll to top button -->
+  <button class="scroll-top" id="scrollTop">
+    <i class="fas fa-arrow-up"></i>
+  </button>
 
+  <script>
+    // Remove loading screen when page loads
+    window.addEventListener('load', () => {
+      const loading = document.getElementById('loading');
+      loading.classList.add('hidden');
+      setTimeout(() => loading.remove(), 500);
+    });
 
-  <script src="script.js"></script>
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navMenu = document.getElementById('navMenu');
+    let isMenuOpen = false;
+
+    mobileMenuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      navMenu.classList.toggle('active');
+      mobileMenuBtn.innerHTML = isMenuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    });
+
+    // Close mobile menu when clicking on links
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        isMenuOpen = false;
+        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+      });
+    });
+
+    // Smooth scrolling with offset
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const headerOffset = 100;
+          const elementPosition = target.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Counter animation for statistics
+    const counters = document.querySelectorAll('[data-count]');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseInt(entry.target.getAttribute('data-count'));
+          let current = 0;
+          const increment = target / 50;
+          
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            entry.target.textContent = Math.floor(current) + (target >= 1000 ? '+' : '');
+          }, 50);
+          
+          counterObserver.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    counters.forEach(counter => counterObserver.observe(counter));
+
+    // Scroll to top button
+    const scrollTopBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 500) {
+        scrollTopBtn.classList.add('visible');
+      } else {
+        scrollTopBtn.classList.remove('visible');
+      }
+    });
+
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Search functionality
+    const pluginSearch = document.getElementById('pluginSearch');
+    const skriptSearch = document.getElementById('skriptSearch');
+    
+    function filterCards(searchInput, gridId) {
+      const query = searchInput.value.toLowerCase();
+      const cards = document.querySelectorAll(`#${gridId} .card`);
+      
+      cards.forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();
+        const description = card.querySelector('.card-description').textContent.toLowerCase();
+        
+        if (title.includes(query) || description.includes(query)) {
+          card.style.display = 'block';
+          setTimeout(() => card.style.opacity = '1', 10);
+        } else {
+          card.style.opacity = '0';
+          setTimeout(() => card.style.display = 'none', 300);
+        }
+      });
+    }
+
+    pluginSearch.addEventListener('input', () => filterCards(pluginSearch, 'pluginsGrid'));
+    skriptSearch.addEventListener('input', () => filterCards(skriptSearch, 'skriptsGrid'));
+
+    // Filter functionality for plugins
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        filterTabs.forEach(t => t.classList.remove('active'));
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        
+        const filter = tab.getAttribute('data-filter');
+        const cards = document.querySelectorAll('#pluginsGrid .card');
+        
+        cards.forEach(card => {
+          const category = card.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            card.style.display = 'block';
+            setTimeout(() => card.style.opacity = '1', 10);
+          } else {
+            card.style.opacity = '0';
+            setTimeout(() => card.style.display = 'none', 300);
+          }
+        });
+      });
+    });
+
+    // Download functionality
+    function downloadFile(filename, content) {
+      // Create a simple text content for demo
+      const sampleContent = {
+        'discord-shoutout': `# Discord Shoutout Skript
+# Simple Discord promotion system
+
+command /discord:
+    trigger:
+        send formatted "&9&l[DISCORD] &7Join our Discord server!"
+        send formatted "&b&nclick here: discord.gg/yourserver"`,
+        
+        'player-wipe': `# Player Wipe Skript
+# Complete player reset system
+
+command /wipe <player>:
+    permission: staff.wipe
+    trigger:
+        set {_target} to arg-1
+        clear {_target}'s inventory
+        set {_target}'s balance to 0
+        send "&c%{_target}% has been wiped!" to all players`,
+        
+        'simple-hide': `# Simple Hide Skript
+# Player vanish system
+
+command /hide:
+    trigger:
+        if player is not hidden:
+            hide player from all players
+            send "&7You are now hidden!"
+        else:
+            reveal player from all players
+            send "&7You are now visible!"`,
+            
+        'chat-wipe': `# Chat Wipe Skript
+# Clear chat for all players
+
+command /chatwipe:
+    permission: staff.chatwipe
+    trigger:
+        loop 100 times:
+            send "" to all players
+        send "&c&lChat has been cleared!" to all players`,
+        
+        'combat-log': `# Combat Log System
+# Prevent combat logging
+
+on damage:
+    if victim is a player:
+        if attacker is a player:
+            set {combatlog::%victim%} to now
+            set {combatlog::%attacker%} to now
+            send "&c&lYou are now in combat!" to victim
+            send "&c&lYou are now in combat!" to attacker`,
+            
+        'phantom-toggle': `# Phantom Toggle Skript
+# Control phantom spawns
+
+command /phantomtoggle:
+    trigger:
+        if {phantom::%player%} is not set:
+            set {phantom::%player%} to true
+            send "&7Phantoms disabled in your area!"
+        else:
+            delete {phantom::%player%}
+            send "&7Phantoms enabled in your area!"`
+      };
+
+      const blob = new Blob([sampleContent[content] || '# Skript content will be here'], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+      
+      // Show download notification
+      showNotification(`${filename} downloaded successfully!`, 'success');
+    }
+
+    // Notification system
+    function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        background: ${type === 'success' ? 'var(--success)' : 'var(--primary)'};
+        color: white;
+        border-radius: 10px;
+        box-shadow: var(--shadow-lg);
+        z-index: 10000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+      `;
+      notification.textContent = message;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+      setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => document.body.removeChild(notification), 300);
+      }, 3000);
+    }
+
+    // Add some interactive hover effects
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-12px) scale(1.02)';
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        this.style.transform = 'translateY(-8px) scale(1)';
+      });
+    });
+
+    // Easter egg - Konami code
+    let konamiCode = [];
+    const konamiSequence = [
+      'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+      'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+      'KeyB', 'KeyA'
+    ];
+
+    document.addEventListener('keydown', (e) => {
+      konamiCode.push(e.code);
+      if (konamiCode.length > konamiSequence.length) {
+        konamiCode.shift();
+      }
+      
+      if (konamiCode.join('') === konamiSequence.join('')) {
+        showNotification('🎉 Easter egg found! You are a true gamer!', 'success');
+        document.body.style.animation = 'rainbow 2s ease-in-out';
+        setTimeout(() => document.body.style.animation = '', 2000);
+      }
+    });
+
+    // Add rainbow animation for easter egg
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes rainbow {
+        0% { filter: hue-rotate(0deg); }
+        100% { filter: hue-rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>
